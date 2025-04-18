@@ -5,14 +5,7 @@
     ],
     "routes": [
       { "src": "/api-key", "dest": "/index.js" },
-      { "src": "/style.css", "dest": "/public/style.css" },
-      { "src": "/script.js", "dest": "/public/script.js" },
-      { "src": "/games.html", "dest": "/public/games.html" },
-      { "src": "/questions.html", "dest": "/public/questions.html" },
-      { "src": "/test.html", "dest": "/public/test.html" },
-      { "src": "/vocab.html", "dest": "/public/vocab.html" },
-      { "src": "/index.html", "dest": "/public/index.html" },
-      { "src": "/", "dest": "/public/index.html" }
+      { "src": "/(.*)", "dest": "/public/$1" }
     ]
   }
   
