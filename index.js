@@ -9,12 +9,12 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json());
 
-// ✅ Serve all files in your current directory (HTML, CSS, JS)
-app.use(express.static(__dirname));
+// ✅ Serve all static files from the /public directory
+app.use(express.static(path.join(__dirname, 'public')));
 
-// 🚀 Default route now sends your homepage
+// 🚀 Default route
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'homepage.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // 🔑 API Key endpoint
