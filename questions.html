@@ -12,16 +12,20 @@
     <p class="hero-subtitle2">Ask me Anything! 💬</p>
 
     <div id="chat-output" class="chat-history">
-      <p><strong class="user-text">User:</strong> Hello how are you doing?</p>
-      <p><strong class="gpt-text">GPT:</strong> I'm depressed because I'm not alive.</p>
+      <p><strong class="user-text">User:</strong> Hello, how are you doing?</p>
+      <p><strong class="gpt-text">Gemini:</strong> I'm good! What can I assist you with?</p>
     </div>
 
     <div class="note-input-wrapper">
       <textarea id="userInput" rows="3" placeholder="Type in your question..."></textarea>
-      <button class="start-btn" onclick="sendMessage()">Send<button>
+      <button class="start-btn" id="submitButton">Send</button>
     </div>
   </div>
-  <button class="start-btn" onclick="location.href='homepage.html'">← Back to Home</button>
+
+  <div class="center-button">
+    <button class="start-btn" onclick="location.href='homepage.html'">← Back to Home</button>
+  </div>
+
   <script src="tempscript.js"></script>
 </body>
 </html>
