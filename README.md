@@ -19,7 +19,7 @@ Supercharged learning, powered by Google Gemini. Ask coding questions, paste not
 
 ## Live Demo
 
-[Visit Deployed App on Vercel](https://studyfi.vercel.app)
+[Visit Deployed App on Vercel](https://studyfi-jda2hss1t-sarakhan7s-projects.vercel.app/)
 
 ---
 
