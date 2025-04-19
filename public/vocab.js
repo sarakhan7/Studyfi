@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", async () => {
   let vocabList = [];
   let current = 0;
+  let known = 0;
+  let unknown = 0;
 
   const vocabWord = document.getElementById("vocab-word");
   const vocabInput = document.getElementById("vocab-input");
@@ -15,42 +17,41 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (userNotes) {
     try {
-      const apiKey = "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"; // OpenRouter
-
       const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${apiKey}`,
+          "Authorization": "Bearer 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",
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "openai/gpt-3.5-turbo",
+          model: "google/gemini-pro",
           messages: [
             {
               role: "user",
-              content: `Extract exactly 5 vocabulary terms and their definitions from the following notes. Return ONLY valid JSON in this format: 
-[{"word": "Term", "definition": "Definition"}, ...]
-Do not include any explanation or markdown formatting. Notes:\n${userNotes}`
+              content: `Extract exactly 5 vocabulary words and their definitions from these notes. 
+Return ONLY valid JSON like: [{"word": "Term", "definition": "Definition"}, ...]. 
+No extra text or formatting.
+
+Notes:\n${userNotes}`
             }
           ]
         })
       });
 
       const data = await res.json();
-      const text = data?.choices?.[0]?.message?.content ?? null;
-      console.log("OpenRouter raw response:", text);
+      const text = data.choices?.[0]?.message?.content?.trim();
 
-      if (!text) throw new Error("OpenRouter returned empty response");
+      if (!text) throw new Error("Empty response from OpenRouter");
 
-      // 🧼 Strip markdown fences if present
-      const cleanText = text
-        .replace(/```json/i, "")
-        .replace(/```/, "")
-        .trim();
+      try {
+        vocabList = JSON.parse(text);
+      } catch (jsonErr) {
+        console.error("❌ Invalid JSON, using fallback.");
+        vocabList = getFallbackList();
+      }
 
-      vocabList = JSON.parse(cleanText);
     } catch (err) {
-      console.error("❌ Error loading vocab from OpenRouter:", err);
+      console.error("❌ Fetch failed:", err);
       vocabList = getFallbackList();
     }
   } else {
@@ -64,19 +65,20 @@ Do not include any explanation or markdown formatting. Notes:\n${userNotes}`
 
   function loadWord() {
     vocabFeedback.textContent = "";
+    vocabFeedback.style.color = "#22223b";
     vocabInput.value = "";
     vocabWord.textContent = vocabList[current].word;
   }
 
   function checkDefinition() {
     const input = vocabInput.value.trim().toLowerCase();
-    const correct = vocabList[current].definition.toLowerCase();
+    const correctDef = vocabList[current].definition.toLowerCase();
 
-    if (input && (correct.includes(input) || input.includes(correct))) {
+    if (input && (correctDef.includes(input) || input.includes(correctDef))) {
       vocabFeedback.textContent = "✅ Correct!";
       vocabFeedback.style.color = "green";
     } else {
-      vocabFeedback.textContent = `❌ Nope. It was: ${vocabList[current].definition}`;
+      vocabFeedback.textContent = `❌ Nope! It was: ${vocabList[current].definition}`;
       vocabFeedback.style.color = "red";
     }
   }
@@ -87,10 +89,12 @@ Do not include any explanation or markdown formatting. Notes:\n${userNotes}`
   }
 
   function markKnown() {
-    skipWord(); // optional tracking
+    known++;
+    skipWord();
   }
 
   function markUnknown() {
+    unknown++;
     skipWord();
   }
 
@@ -103,11 +107,11 @@ Do not include any explanation or markdown formatting. Notes:\n${userNotes}`
 
   function getFallbackList() {
     return [
-      { word: "Atom", definition: "The smallest unit of matter." },
+      { word: "Photosynthesis", definition: "The process by which green plants use sunlight to synthesize food." },
+      { word: "Mitosis", definition: "Cell division that results in two identical daughter cells." },
+      { word: "Osmosis", definition: "Water diffusion through a semipermeable membrane." },
       { word: "Evaporation", definition: "Liquid turning into vapor." },
-      { word: "Osmosis", definition: "Water movement through a membrane." },
-      { word: "Photosynthesis", definition: "How plants make food from light." },
-      { word: "Mitosis", definition: "Cell division into two identical cells." }
+      { word: "Atom", definition: "The smallest unit of a chemical element." }
     ];
   }
 });

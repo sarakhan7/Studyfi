@@ -1,61 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>StudyFi</title>
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
 </head>
-
 <body>
   <div class="hero">
     <h1 class="glow-title">StudyFi</h1>
     <h2 class="hero-subtitle">Welcome to StudyFi: An AI assistant that helps you learn.</h2>
-
     <div class="note-input-wrapper">
-      <input type="text" id="inputNotes" placeholder="Paste notes here...">
-      <button class="start-btn">Submit</button>
+      <input type="text" id="inputNotes" placeholder="Paste notes here..." />
+      <button class="start-btn" id="submitNotes">Submit</button>
     </div>
   </div>
 
-  <br><br>
   <h2 id="study-method-header">Choose any of the following methods to study from:</h2>
 
   <div class="feature-container">
-    <div class="feature-card" onclick="location.href='/questions.html'">
+    <div class="feature-card" onclick="location.href='questions.html'">
       <h3>Questions with Feedback</h3>
-      <br>
-      <p id="feedback-box-description">
-        Practice open-ended questions and get real-time AI feedback to boost your understanding.
-      </p>
+      <p>Practice open-ended questions and get real-time AI feedback to boost your understanding.</p>
     </div>
 
-    <div class="feature-card" onclick="location.href='/vocab.html'">
+    <div class="feature-card" onclick="location.href='vocab.html'">
       <h3>Vocab Study</h3>
-      <p id="vocab-box-description">
-        Review key terms and definitions in flashcard format to reinforce your memory.
-      </p>
+      <p>Review key terms and definitions in flashcard format to reinforce your memory.</p>
     </div>
 
-    <div class="feature-card" onclick="location.href='/games.html'">
+    <div class="feature-card" onclick="location.href='games.html'">
       <h3>Play Some Games</h3>
-      <p id="games-box-description">
-        Make learning fun with educational mini-games that keep your brain engaged.
-      </p>
+      <p>Make learning fun with educational mini-games that keep your brain engaged.</p>
     </div>
 
-    <div class="feature-card" onclick="location.href='/test.html'">
+    <div class="feature-card" onclick="location.href='test.html'">
       <h3>Test Your Knowledge</h3>
-      <br>
-      <p id="test-knowledge-description">
-        See if you know your stuff.
-      </p>
+      <p>See if you know your stuff.</p>
     </div>
   </div>
 
-  <script src="/script.js"></script>
+  <script src="script.js" defer></script>
 </body>
-
 </html>

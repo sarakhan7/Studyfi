@@ -1,27 +1,4 @@
-const GEMINI_API_KEY = "AIzaSyBESYOt2L3AZOEpgD9XmVlSTJjsnjsVh2Y";
-
-async function geminiCompletion(prompt, context) {
-  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      contents: [{
-        parts: [
-          { text: `${context}\n\n${prompt}` }
-        ]
-      }]
-    })
-  });
-
-  const data = await response.json();
-  try {
-    return data.candidates[0].content.parts[0].text;
-  } catch {
-    return "Failed to get response - try again";
-  }
-}
+const OPENROUTER_API_KEY = "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"; // 🔐 Use a .env in production
 
 const submitButton = document.getElementById("submitButton");
 const container = document.getElementById("chat-output");
@@ -33,18 +10,26 @@ submitButton.addEventListener("click", async function () {
   container.innerHTML += `<p><strong class="user-text">User:</strong> ${userInput}</p>`;
 
   try {
-    const response = await fetch("http://localhost:3000/generate", {
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
+        "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ prompt: userInput })
+      body: JSON.stringify({
+        model: "openai/gpt-3.5-turbo", // or another model from https://openrouter.ai/docs#models
+        messages: [
+          { role: "user", content: userInput }
+        ]
+      })
     });
 
     const data = await response.json();
-    container.innerHTML += `<p><strong class="gpt-text">Gemini:</strong> ${data.text}</p>`;
+    const reply = data.choices?.[0]?.message?.content || "No response.";
+
+    container.innerHTML += `<p><strong class="gpt-text">GPT:</strong> ${reply}</p>`;
   } catch (error) {
-    container.innerHTML += `<p><strong class="gpt-text">Gemini:</strong> ❌ Error: Could not get a response</p>`;
+    container.innerHTML += `<p><strong class="gpt-text">GPT:</strong> ❌ Error: ${error.message}</p>`;
   }
 
   document.getElementById("userInput").value = "";
